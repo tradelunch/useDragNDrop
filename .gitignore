@@ -1,2 +1,10 @@
-.npmrc
 node_modules/
+
+*.iml
+.idea
+.tscache
+.DS_Store
+node_modules/
+typings/
+coverage/
+package-lock.json

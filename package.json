@@ -3,12 +3,35 @@
     "publishConfig": {
         "registry": "https://github.com/tradelunch"
     },
+    "keywords": [
+        "react",
+        "http",
+        "drag",
+        "drop",
+        "node",
+        "hook",
+        "component"
+    ],
+    "homepage": "https://github.com/tradelunch/useDragNDrop",
     "version": "1.0.0",
     "description": "useDragNDrop to create Draggable Component. By wrapping a component with Draggable, you can create drag and drop component",
     "main": "./dist/index.js",
     "repository": "https://github.com/tradelunch/useDragNDrop.git",
-    "author": "TradeLunch",
+    "author": {
+        "name": "tradelunch",
+        "email": "tio.taek.lim@gmail.com",
+        "url": "http://github.com/tradelunch"
+    },
+    "files": [
+        "dist",
+        "lib",
+        "!dist/test"
+    ],
     "license": "MIT",
+    "scripts": {
+        "start": "npm run build && serve ./public/index.html",
+        "build": "tsc"
+    },
     "peerDependencies": {
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
