@@ -21,9 +21,6 @@ function useDragNDrop() {
         // setPosition('absolute');
     }, [isDragging]);
     const onMouseDown = (0, react_1.useCallback)((e) => {
-        console.log(":: ", {
-            e,
-        });
         const { currentTarget: dragElement, clientX, clientY } = e;
         if (!dragElement)
             return;

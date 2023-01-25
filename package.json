@@ -2,7 +2,7 @@
     "name": "@tradelunch/useDragNDrop",
     "publishConfig": {
         "access": "public",
-        "registry": "https://npm.pkg.github.com"
+        "registry": "https://registry.npmjs.org/"
     },
     "keywords": [
         "react",
@@ -38,7 +38,7 @@
     "license": "MIT",
     "scripts": {
         "start": "npm run build && serve ./public/index.html",
-        "build": "tsc"
+        "build": "rm -rf ./dist && tsc"
     },
     "peerDependencies": {
         "react": "^18.2.0",
