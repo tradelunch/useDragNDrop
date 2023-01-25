@@ -23,6 +23,10 @@
         "email": "tio.taek.lim@gmail.com",
         "url": "http://github.com/tradelunch"
     },
+    "bugs": {
+        "url": "https://github.com/tradelunch/useDragNDrop",
+        "email": "tio.taek.lim@gmail.com"
+    },
     "files": [
         "dist",
         "lib",
