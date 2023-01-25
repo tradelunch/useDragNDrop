@@ -8,3 +8,5 @@ node_modules/
 typings/
 coverage/
 package-lock.json
+
+.env*
