@@ -1,0 +1,18 @@
+{
+    "name": "useDragNDrop",
+    "version": "1.0.0",
+    "description": "useDragNDrop to create Draggable Component. By wrapping a component with Draggable, you can create drag and drop component",
+    "main": "./dist/index.js",
+    "repository": "https://github.com/tradelunch/useDragNDrop.git",
+    "author": "TradeLunch",
+    "license": "MIT",
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^4.9.4"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.10"
+    }
+}
