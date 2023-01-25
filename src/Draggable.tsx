@@ -9,5 +9,16 @@ export function Draggable({ children }: Props) {
     const { onMouseDown, onDragStart, onMouseUp, style, dragRef } =
         useDragNDrop();
 
-    return <div>{children}</div>;
+    return (
+        <div
+            style={style}
+            ref={dragRef}
+            // draggable
+            onDragStart={onDragStart}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+        >
+            1111 -- {children}
+        </div>
+    );
 }
