@@ -1,6 +1,7 @@
 {
     "name": "@tradelunch/useDragNDrop",
     "publishConfig": {
+        "access": "public",
         "registry": "https://github.com/tradelunch"
     },
     "keywords": [
