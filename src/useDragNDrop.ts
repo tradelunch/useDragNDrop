@@ -31,6 +31,9 @@ export function useDragNDrop() {
     }, [isDragging]);
 
     const onMouseDown = useCallback((e: any) => {
+        console.log(":: ", {
+            e,
+        });
         const { currentTarget: dragElement, clientX, clientY } = e;
         if (!dragElement) return;
         e.preventDefault();
