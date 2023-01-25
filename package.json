@@ -27,6 +27,10 @@
         "lib",
         "!dist/test"
     ],
+    "npm": {
+        "publish": true,
+        "skipChecks": false
+    },
     "license": "MIT",
     "scripts": {
         "start": "npm run build && serve ./public/index.html",
