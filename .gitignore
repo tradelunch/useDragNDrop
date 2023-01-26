@@ -106,5 +106,6 @@ dist
 # tio
 .env*
 ./workflows
+workflows
 
 
