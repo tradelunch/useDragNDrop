@@ -38,7 +38,8 @@
     "license": "MIT",
     "scripts": {
         "start": "npm run build && serve ./public/index.html",
-        "build": "rm -rf ./dist && tsc"
+        "build": "rm -rf ./dist && tsc",
+        "prepare": "rm -rf dist && mkdir dist && tsc"
     },
     "peerDependencies": {
         "react": "^18.2.0",
