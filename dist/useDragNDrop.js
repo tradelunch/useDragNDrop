@@ -76,6 +76,7 @@ function useDragNDrop(props = {
         top: `${top}px`,
         left: `${left}px`,
         cursor: "pointer",
+        transform: `translate3d(0, 0, 0)`, // hardware acceleration
     }), [left, position, top]);
     return {
         onMouseDown,
