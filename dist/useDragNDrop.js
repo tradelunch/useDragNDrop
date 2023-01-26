@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useDragNDrop = void 0;
 const react_1 = require("react");
-function useDragNDrop(props) {
+function useDragNDrop(props = {
+    position: "absolute",
+}) {
     var _a;
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
     const [position, setPosition] = (0, react_1.useState)((_a = props.position) !== null && _a !== void 0 ? _a : "absolute");
