@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-        "target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+        "target": "ES2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
         "module": "commonjs",
         "jsx": "react",
         "rootDir": "./src" /* Specify the root folder within your source files. */,
         "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
-        "sourceMap": true,
+        "sourceMap": false,
         "noImplicitAny": true,
         "typeRoots": [
             "node_modules/@types",
