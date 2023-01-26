@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useDragNDrop = void 0;
 const react_1 = require("react");
-function useDragNDrop() {
+function useDragNDrop(props) {
+    var _a;
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
-    const [position, setPosition] = (0, react_1.useState)("relative");
+    const [position, setPosition] = (0, react_1.useState)((_a = props.position) !== null && _a !== void 0 ? _a : "absolute");
     const [top, setTop] = (0, react_1.useState)(50);
     const [left, setLeft] = (0, react_1.useState)(50);
     const [shiftX, setShiftX] = (0, react_1.useState)(0);
@@ -21,6 +22,7 @@ function useDragNDrop() {
         // setPosition('absolute');
     }, [isDragging]);
     const onMouseDown = (0, react_1.useCallback)((e) => {
+        var _a;
         const { currentTarget: dragElement, clientX, clientY } = e;
         if (!dragElement)
             return;
@@ -28,7 +30,7 @@ function useDragNDrop() {
         setIsDragging(true);
         setShiftX(clientX - dragElement.getBoundingClientRect().left);
         setShiftY(clientY - dragElement.getBoundingClientRect().top);
-        setPosition("fixed");
+        setPosition((_a = props.position) !== null && _a !== void 0 ? _a : "absolute");
     }, []);
     const onMouseMove = (0, react_1.useCallback)((e) => {
         if (!dragRef.current)
