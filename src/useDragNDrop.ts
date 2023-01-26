@@ -7,10 +7,16 @@ import {
     CSSProperties,
 } from "react";
 
-export function useDragNDrop() {
+type TPositions = "absolute" | "relative" | "fixed";
+
+type TProps = {
+    position?: TPositions;
+};
+
+export function useDragNDrop(props: TProps) {
     const [isDragging, setIsDragging] = useState(false);
-    const [position, setPosition] = useState<"absolute" | "relative" | "fixed">(
-        "relative"
+    const [position, setPosition] = useState<TPositions>(
+        props.position ?? "absolute"
     );
     const [top, setTop] = useState(50);
     const [left, setLeft] = useState(50);
@@ -40,7 +46,7 @@ export function useDragNDrop() {
         setShiftX(clientX - dragElement.getBoundingClientRect().left);
         setShiftY(clientY - dragElement.getBoundingClientRect().top);
 
-        setPosition("fixed");
+        setPosition(props.position ?? "absolute");
     }, []);
 
     const onMouseMove = useCallback(
