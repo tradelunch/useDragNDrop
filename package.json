@@ -1,6 +1,7 @@
 {
+    "version": "1.0.6",
+    "main": "./dist/index.js",
     "name": "@tradelunch/usedragndrop",
-    "version": "1.0.4",
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
@@ -16,7 +17,6 @@
     ],
     "homepage": "https://github.com/tradelunch/useDragNDrop",
     "description": "useDragNDrop to create Draggable Component. By wrapping a component with Draggable, you can create drag and drop component",
-    "main": "./dist/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/tradelunch/useDragNDrop.git"
