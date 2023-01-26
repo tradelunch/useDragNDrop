@@ -110,6 +110,7 @@ export function useDragNDrop(
             top: `${top}px`,
             left: `${left}px`,
             cursor: "pointer",
+            transform: `translate3d(0, 0, 0)`, // hardware acceleration
         }),
         [left, position, top]
     );
