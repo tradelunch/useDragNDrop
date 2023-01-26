@@ -13,7 +13,11 @@ type TProps = {
     position?: TPositions;
 };
 
-export function useDragNDrop(props: TProps) {
+export function useDragNDrop(
+    props: TProps = {
+        position: "absolute",
+    }
+) {
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState<TPositions>(
         props.position ?? "absolute"
