@@ -2,7 +2,9 @@
 
 > This is a simple react hook to create a draggable component.
 
-![dragNDrop example ](https://user-images.githubusercontent.com/32627274/215250237-d04d21bd-e6bd-4761-a609-866b9307acd7.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/32627274/215250237-d04d21bd-e6bd-4761-a609-866b9307acd7.gif" alt="useDragNDrop example"/>
+</p>
 
 Please let me know anything if you need. I will try to work on this
 Thank you for downloading!!
@@ -86,6 +88,7 @@ export default App;
 ```
 
 ### You can use style or top/left value to adjust position what you want
+
 ```typescript
 export declare function useDragNDrop(props?: TProps): {
     onMouseDown: (e: any) => void;
