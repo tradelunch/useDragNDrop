@@ -6,10 +6,12 @@ function useDragNDrop(props = {
     position: "absolute",
 }) {
     var _a;
+    const { position: initialPosition = "absolute", bounds } = props;
+    const $bounds = (_a = bounds === null || bounds === void 0 ? void 0 : bounds.current) !== null && _a !== void 0 ? _a : document.documentElement;
     const [isDragging, setIsDragging] = (0, react_1.useState)(false);
-    const [position, setPosition] = (0, react_1.useState)((_a = props.position) !== null && _a !== void 0 ? _a : "absolute");
-    const [top, setTop] = (0, react_1.useState)(50);
-    const [left, setLeft] = (0, react_1.useState)(50);
+    const [position, setPosition] = (0, react_1.useState)(initialPosition);
+    const [top, setTop] = (0, react_1.useState)(0);
+    const [left, setLeft] = (0, react_1.useState)(0);
     const [shiftX, setShiftX] = (0, react_1.useState)(0);
     const [shiftY, setShiftY] = (0, react_1.useState)(0);
     const dragRef = (0, react_1.useRef)(null);
@@ -24,7 +26,6 @@ function useDragNDrop(props = {
         // setPosition('absolute');
     }, [isDragging]);
     const onMouseDown = (0, react_1.useCallback)((e) => {
-        var _a;
         const { currentTarget: dragElement, clientX, clientY } = e;
         if (!dragElement)
             return;
@@ -32,7 +33,7 @@ function useDragNDrop(props = {
         setIsDragging(true);
         setShiftX(clientX - dragElement.getBoundingClientRect().left);
         setShiftY(clientY - dragElement.getBoundingClientRect().top);
-        setPosition((_a = props.position) !== null && _a !== void 0 ? _a : "absolute");
+        // setPosition(props.position ?? "absolute");
     }, []);
     const onMouseMove = (0, react_1.useCallback)((e) => {
         if (!dragRef.current)
@@ -41,13 +42,23 @@ function useDragNDrop(props = {
         const dragElement = dragRef.current;
         const { clientX, clientY } = e;
         // new window-relative coordinates
-        let newX = clientX - shiftX;
-        let newY = clientY - shiftY;
+        let newX = clientX - shiftX - $bounds.getBoundingClientRect().left;
+        let newY = clientY - shiftY - $bounds.getBoundingClientRect().top;
+        // console.log(":: new:: ", {
+        //     clientY,
+        //     shiftY,
+        //     newY,
+        //     clientX,
+        //     shiftX,
+        //     newX,
+        //     $bounds,
+        //     dragRef: dragRef.current,
+        // });
         // check if the new coordinates are below the bottom window edge
         let newBottom = newY + dragElement.offsetHeight;
         // limit bottom
-        if (newBottom > document.documentElement.clientHeight) {
-            newY = Math.min(newY, document.documentElement.clientHeight -
+        if (newBottom > $bounds.getBoundingClientRect().height) {
+            newY = Math.min(newY, $bounds.getBoundingClientRect().height -
                 dragElement.offsetHeight);
         }
         if (newY < 0) {
@@ -57,18 +68,18 @@ function useDragNDrop(props = {
         if (newX < 0)
             newX = 0;
         if (newX >
-            document.documentElement.clientWidth - dragElement.offsetWidth) {
+            $bounds.getBoundingClientRect().width - dragElement.offsetWidth) {
             newX =
-                document.documentElement.clientWidth -
+                $bounds.getBoundingClientRect().width -
                     dragElement.offsetWidth;
         }
         setLeft(newX);
         setTop(newY);
     }, [shiftX, shiftY]);
     (0, react_1.useEffect)(() => {
-        isDragging && document.addEventListener("mousemove", onMouseMove);
+        isDragging && $bounds.addEventListener("mousemove", onMouseMove);
         return () => {
-            document.removeEventListener("mousemove", onMouseMove);
+            $bounds.removeEventListener("mousemove", onMouseMove);
         };
     }, [isDragging, onMouseMove]);
     const style = (0, react_1.useMemo)(() => ({

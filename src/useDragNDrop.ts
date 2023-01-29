@@ -1,4 +1,4 @@
-import {
+import React, {
     useState,
     useRef,
     useCallback,
@@ -11,6 +11,7 @@ type TPositions = "absolute" | "relative" | "fixed";
 
 type TProps = {
     position?: TPositions;
+    bounds?: React.RefObject<any>;
 };
 
 export function useDragNDrop(
@@ -18,12 +19,13 @@ export function useDragNDrop(
         position: "absolute",
     }
 ) {
+    const { position: initialPosition = "absolute", bounds } = props;
+    const $bounds = bounds?.current ?? document.documentElement;
+
     const [isDragging, setIsDragging] = useState(false);
-    const [position, setPosition] = useState<TPositions>(
-        props.position ?? "absolute"
-    );
-    const [top, setTop] = useState(50);
-    const [left, setLeft] = useState(50);
+    const [position, setPosition] = useState<TPositions>(initialPosition);
+    const [top, setTop] = useState(0);
+    const [left, setLeft] = useState(0);
 
     const [shiftX, setShiftX] = useState(0);
     const [shiftY, setShiftY] = useState(0);
@@ -50,7 +52,7 @@ export function useDragNDrop(
         setShiftX(clientX - dragElement.getBoundingClientRect().left);
         setShiftY(clientY - dragElement.getBoundingClientRect().top);
 
-        setPosition(props.position ?? "absolute");
+        // setPosition(props.position ?? "absolute");
     }, []);
 
     const onMouseMove = useCallback(
@@ -62,17 +64,28 @@ export function useDragNDrop(
             const { clientX, clientY } = e;
 
             // new window-relative coordinates
-            let newX = clientX - shiftX;
-            let newY = clientY - shiftY;
+            let newX = clientX - shiftX - $bounds.getBoundingClientRect().left;
+            let newY = clientY - shiftY - $bounds.getBoundingClientRect().top;
+
+            // console.log(":: new:: ", {
+            //     clientY,
+            //     shiftY,
+            //     newY,
+            //     clientX,
+            //     shiftX,
+            //     newX,
+            //     $bounds,
+            //     dragRef: dragRef.current,
+            // });
 
             // check if the new coordinates are below the bottom window edge
             let newBottom = newY + dragElement.offsetHeight;
 
             // limit bottom
-            if (newBottom > document.documentElement.clientHeight) {
+            if (newBottom > $bounds.getBoundingClientRect().height) {
                 newY = Math.min(
                     newY,
-                    document.documentElement.clientHeight -
+                    $bounds.getBoundingClientRect().height -
                         dragElement.offsetHeight
                 );
             }
@@ -84,10 +97,10 @@ export function useDragNDrop(
             if (newX < 0) newX = 0;
             if (
                 newX >
-                document.documentElement.clientWidth - dragElement.offsetWidth
+                $bounds.getBoundingClientRect().width - dragElement.offsetWidth
             ) {
                 newX =
-                    document.documentElement.clientWidth -
+                    $bounds.getBoundingClientRect().width -
                     dragElement.offsetWidth;
             }
 
@@ -98,9 +111,9 @@ export function useDragNDrop(
     );
 
     useEffect(() => {
-        isDragging && document.addEventListener("mousemove", onMouseMove);
+        isDragging && $bounds.addEventListener("mousemove", onMouseMove);
         return () => {
-            document.removeEventListener("mousemove", onMouseMove);
+            $bounds.removeEventListener("mousemove", onMouseMove);
         };
     }, [isDragging, onMouseMove]);
 
