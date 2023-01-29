@@ -34,18 +34,21 @@ code .
 This code is simple file that I created for example. you can see how to use **useDragNDrop** hook briefly.
 
 ```jsx
-import React from "react";
+import React, { useRef } from "react";
 import { useDragNDrop } from "@tradelunch/usedragndrop";
 
 function App() {
     // take event functions, positions, ref and etc.
+    const bounds = useRef(null); // you can set bounds inside which a draggable component can move 
     const { onMouseDown, onDragStart, onMouseUp, style, dragRef } =
         useDragNDrop({
             position: "absolute",
+            bounds
         });
 
     return (
         <div
+            bounds={bounds}
             style={{
                 // willChange: "transform, top, left",
                 background: "#b6b6e5",
