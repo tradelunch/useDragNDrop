@@ -67,17 +67,6 @@ export function useDragNDrop(
             let newX = clientX - shiftX - $bounds.getBoundingClientRect().left;
             let newY = clientY - shiftY - $bounds.getBoundingClientRect().top;
 
-            // console.log(":: new:: ", {
-            //     clientY,
-            //     shiftY,
-            //     newY,
-            //     clientX,
-            //     shiftX,
-            //     newX,
-            //     $bounds,
-            //     dragRef: dragRef.current,
-            // });
-
             // check if the new coordinates are below the bottom window edge
             let newBottom = newY + dragElement.offsetHeight;
 
@@ -90,7 +79,8 @@ export function useDragNDrop(
                 );
             }
             if (newY < 0) {
-                newY = Math.max(newY, 0); // newY may not be below 0
+                // newY may not be below 0                
+                newY = Math.max(newY, 0); 
             }
 
             // limit left
@@ -117,16 +107,13 @@ export function useDragNDrop(
         };
     }, [isDragging, onMouseMove]);
 
-    const style: CSSProperties = useMemo(
-        () => ({
-            position: position,
-            top: `${top}px`,
-            left: `${left}px`,
-            cursor: "pointer",
-            transform: `translate3d(0, 0, 0)`, // hardware acceleration
-        }),
-        [left, position, top]
-    );
+    const style: CSSProperties = {
+        position: position,
+        top: `${top}px`,
+        left: `${left}px`,
+        cursor: "pointer",
+        transform: `translate3d(0, 0, 0)`, // hardware acceleration
+    };
 
     return {
         onMouseDown,
