@@ -33,9 +33,40 @@ code .
 
 This code is simple file that I created for example. you can see how to use **useDragNDrop** hook briefly.
 
+App.module.css
+```css
+.Box {
+    background: #b6b6e5;
+    height: 100vh;
+    width: 100%;
+}
+
+.wrapper:hover {
+    will-change: transform, top, left;
+}
+
+.Content {
+    width: 100px;
+    height: 100px;
+    background-color: grey;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
+    border: 2px solid darkgrey;
+}
+
+
+```
+
+App.jsx
 ```jsx
 import React, { useRef } from "react";
 import { useDragNDrop } from "@tradelunch/usedragndrop";
+import styles from "App.module.css";
 
 function App() {
     // take event functions, positions, ref and etc.
@@ -48,38 +79,19 @@ function App() {
 
     return (
         <div
+            style={styles.Box}
             bounds={bounds}
-            style={{
-                // willChange: "transform, top, left",
-                background: "#b6b6e5",
-                height: "100vh",
-                width: "100%",
-            }}
         >
             {/* apply them into a dom to make it draggable */}
             <div
-                style={style}
+                style={styles.Wrapper}
                 ref={dragRef}
                 // draggable
                 onDragStart={onDragStart}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
             >
-                <div
-                    style={{
-                        width: "100px",
-                        height: "100px",
-                        backgroundColor: "grey",
-                        display: "flex",
-                        flex: "1",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        margin: "0px",
-                        padding: "0px",
-                        fontWeight: "bold",
-                        border: "2px solid darkgrey",
-                    }}
-                >
+                <div style={styles.Content} >
                     <span>Hello Drag!!</span>
                 </div>
             </div>
