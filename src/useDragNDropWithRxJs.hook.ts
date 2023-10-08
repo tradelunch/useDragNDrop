@@ -3,8 +3,8 @@ import {
     useObservableRef,
     useObservableState,
     useSubscription,
-} from 'observable-hooks';
-import { useEffect, useMemo, useState } from 'react';
+} from "observable-hooks";
+import { useEffect, useMemo, useState } from "react";
 import {
     Subject,
     distinctUntilChanged,
@@ -21,9 +21,9 @@ import {
     takeUntil,
     tap,
     withLatestFrom,
-} from 'rxjs';
+} from "rxjs";
 
-import * as R from 'ramda';
+import * as R from "ramda";
 
 export const useDragNDropWithRxJs = () => {
     const [ref, ref$] = useObservableRef<any>();
@@ -35,9 +35,9 @@ export const useDragNDropWithRxJs = () => {
         const callback = (e: any) => {
             e.preventDefault();
         };
-        document.addEventListener('dragstart', callback);
+        document.addEventListener("dragstart", callback);
 
-        return () => document.removeEventListener('dragstart', callback);
+        return () => document.removeEventListener("dragstart", callback);
     }, [ref]);
 
     const item$ = useObservable(() => {
@@ -189,12 +189,12 @@ type TPosition = {
     y: number;
 };
 
-const SUPPORT_TOUCH = 'ontouchstart' in window;
+const SUPPORT_TOUCH = "ontouchstart" in window;
 
 const EVENTS = {
-    start: SUPPORT_TOUCH ? 'touchstart' : 'mousedown',
-    move: SUPPORT_TOUCH ? 'touchmove' : 'mousemove',
-    end: SUPPORT_TOUCH ? 'touchend' : 'mouseup',
+    start: SUPPORT_TOUCH ? "touchstart" : "mousedown",
+    move: SUPPORT_TOUCH ? "touchmove" : "mousemove",
+    end: SUPPORT_TOUCH ? "touchend" : "mouseup",
 };
 
 function toPos(obs$: any) {
