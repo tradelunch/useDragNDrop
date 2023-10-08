@@ -3,8 +3,8 @@ import {
     useObservableRef,
     useObservableState,
     useSubscription,
-} from "observable-hooks";
-import { useEffect, useMemo, useState } from "react";
+} from 'observable-hooks';
+import { useEffect, useMemo, useState } from 'react';
 import {
     Subject,
     distinctUntilChanged,
@@ -21,11 +21,13 @@ import {
     takeUntil,
     tap,
     withLatestFrom,
-} from "rxjs";
+} from 'rxjs';
 
-import * as R from "ramda";
+import * as R from 'ramda';
 
-export const useDragNDropWithRxJs = () => {
+type Props = string;
+
+export const useDragNDropWithRxJs = (wrapperScroll?: string) => {
     const [ref, ref$] = useObservableRef<any>();
     const [bounds, bounds$] = useObservableRef<any>(document);
 
@@ -35,9 +37,9 @@ export const useDragNDropWithRxJs = () => {
         const callback = (e: any) => {
             e.preventDefault();
         };
-        document.addEventListener("dragstart", callback);
+        document.addEventListener('dragstart', callback);
 
-        return () => document.removeEventListener("dragstart", callback);
+        return () => document.removeEventListener('dragstart', callback);
     }, [ref]);
 
     const item$ = useObservable(() => {
@@ -118,7 +120,16 @@ export const useDragNDropWithRxJs = () => {
 
                     const newY = (function (boundRect, item, bounds) {
                         // const top = boundRect.top;
-                        const top = Math.max(bounds.offsetTop, boundRect.top);
+                        const top = (function getTop(
+                            wrapperScroll,
+                            boundRect,
+                            bounds
+                        ) {
+                            if (wrapperScroll === 'scroll')
+                                return boundRect.top;
+                            return Math.max(bounds.offsetTop, boundRect.top);
+                        })(wrapperScroll, boundRect, bounds);
+
                         let newY = y - shiftY - top;
 
                         // bottom
@@ -176,6 +187,7 @@ export const useDragNDropWithRxJs = () => {
     // });
 
     return {
+        draggableRef: ref,
         ref,
         ref$,
         pos,
@@ -189,12 +201,12 @@ type TPosition = {
     y: number;
 };
 
-const SUPPORT_TOUCH = "ontouchstart" in window;
+const SUPPORT_TOUCH = 'ontouchstart' in window;
 
 const EVENTS = {
-    start: SUPPORT_TOUCH ? "touchstart" : "mousedown",
-    move: SUPPORT_TOUCH ? "touchmove" : "mousemove",
-    end: SUPPORT_TOUCH ? "touchend" : "mouseup",
+    start: SUPPORT_TOUCH ? 'touchstart' : 'mousedown',
+    move: SUPPORT_TOUCH ? 'touchmove' : 'mousemove',
+    end: SUPPORT_TOUCH ? 'touchend' : 'mouseup',
 };
 
 function toPos(obs$: any) {
