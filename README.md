@@ -9,6 +9,24 @@
 Please let me know anything if you need. I will try to work on this
 Thank you for downloading!!
 
+## added rxjs version drag and drop with an argument, wrapperScroll
+```js
+import { useDragNDropWithRxJs } from '@tradelunch/dragndrop';
+
+
+const { ref, bounds, pos } = useDragNDropWithRxJs('scroll');
+
+```
+when you use 
+
+overflow: scroll, 
+height: 100vh
+
+give 'scroll' as an argument
+
+
+
+
 ## Example
 
 ### use cra to create test app
