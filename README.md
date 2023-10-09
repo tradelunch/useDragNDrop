@@ -9,21 +9,6 @@
 Please let me know anything if you need. I will try to work on this
 Thank you for downloading!!
 
-## added rxjs version drag and drop with an argument, wrapperScroll
-```js
-import { useDragNDropWithRxJs } from '@tradelunch/dragndrop';
-
-
-const { ref, bounds, pos } = useDragNDropWithRxJs('scroll');
-
-```
-when you use 
-
-overflow: scroll, 
-height: 100vh
-
-give 'scroll' as an argument
-
 
 
 
@@ -52,6 +37,7 @@ code .
 This code is simple file that I created for example. you can see how to use **useDragNDrop** hook briefly.
 
 App.module.css
+
 ```css
 .Box {
     background: #b6b6e5;
@@ -80,7 +66,10 @@ App.module.css
 
 ```
 
-App.jsx
+
+
+## App.jsx with **useDragNDrop**
+
 ```jsx
 import React, { useRef } from "react";
 import { useDragNDrop } from "@tradelunch/usedragndrop";
@@ -140,3 +129,69 @@ export declare function useDragNDrop(props?: TProps): {
     shiftY: number;
 };
 ```
+
+
+
+
+
+## With useDragNDropRxJs
+
+App.module.css
+
+```css
+.Box {
+    background: #b6b6e5;
+    height: 100vh;
+	  overflow: scroll;
+    width: 100%;
+}
+
+```
+
+**height: 100vh; and overflow: scroll;  added**
+
+
+
+App.jsx
+
+```js
+import React, { useRef } from "react";
+import { useDragNDrop } from "@tradelunch/usedragndrop";
+import styles from "App.module.css";
+
+function App() {
+    // take event functions, positions, ref and etc.
+    const bounds = useRef(null); // you can set bounds inside which a draggable component can move 
+    const { ref: dragRef, bounds, pos } = useDragNDropRxJs({ overflow: 'scroll' });
+
+    return (
+        <div
+            style={styles.Box}
+            bounds={bounds}
+        >
+            {/* apply them into a dom to make it draggable */}
+            <div
+                style={styles.Wrapper}
+                ref={dragRef}
+                // draggable
+                onDragStart={onDragStart}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
+            >
+                <div style={styles.Content} >
+                    <span>Hello Drag!!</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default App;
+```
+
+with css added above, we need to pass overflow with scroll value.
+
+
+
+
+
