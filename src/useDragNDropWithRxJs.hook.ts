@@ -28,7 +28,7 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
     const { overflow = "scroll" } = props;
 
     const [ref, ref$] = useObservableRef<any>();
-    const [bounds, bounds$] = useObservableRef<any>(document);
+    const [bounds, bounds$] = useObservableRef<any>(document?.documentElement);
 
     useEffect(() => {
         if (!ref.current) return;
