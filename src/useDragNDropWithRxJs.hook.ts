@@ -11,8 +11,10 @@ import {
     fromEvent,
     map,
     merge,
+    pluck,
     share,
     shareReplay,
+    startWith,
     switchMap,
     takeUntil,
     withLatestFrom,
@@ -20,15 +22,70 @@ import {
 
 import * as R from "ramda";
 
+const isValueExist = R.both(R.complement(R.isNil), R.complement(R.isEmpty));
+
+type TPosition = {
+    x: number;
+    y: number;
+};
+
+const SUPPORT_TOUCH = "ontouchstart" in window;
+
+const EVENTS = {
+    start: SUPPORT_TOUCH ? "touchstart" : "mousedown",
+    move: SUPPORT_TOUCH ? "touchmove" : "mousemove",
+    end: SUPPORT_TOUCH ? "touchend" : "mouseup",
+};
+
+function toPos(obs$: any) {
+    return obs$.pipe(
+        map((v: any) => {
+            if (SUPPORT_TOUCH) {
+                return {
+                    x: v.changedTouches[0].pageX,
+                    y: v.changedTouches[0].pageY,
+                    clientX: v.changedTouches[0].clientX ?? 0,
+                    clientY: v.changedTouches[0].clientY ?? 0,
+                };
+            }
+
+            return {
+                x: v.pageX,
+                y: v.pageY,
+                clientX: v.clientX,
+                clientY: v.clientY,
+            };
+        })
+    );
+}
+
 type Props = {
     overflow?: string;
+    bounds?: string | HTMLElement;
 };
 
 export const useDragNDropWithRxJs = (props: Props = {}) => {
-    const { overflow = "scroll" } = props;
+    const { overflow = "scroll", bounds } = props;
 
     const [ref, ref$] = useObservableRef<any>();
-    const [bounds, bounds$] = useObservableRef<any>(document?.documentElement);
+
+    const bounds$ = useObservable(
+        (arr$) => {
+            return arr$.pipe(
+                pluck(0),
+                startWith(document.documentElement),
+                map((v) => {
+                    if (typeof v === "string") {
+                        return document.querySelector(v);
+                    }
+
+                    return v;
+                }),
+                filter<any>(isValueExist)
+            );
+        },
+        [bounds]
+    );
 
     useEffect(() => {
         if (!ref.current) return;
@@ -193,38 +250,3 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
         bounds$,
     };
 };
-
-type TPosition = {
-    x: number;
-    y: number;
-};
-
-const SUPPORT_TOUCH = "ontouchstart" in window;
-
-const EVENTS = {
-    start: SUPPORT_TOUCH ? "touchstart" : "mousedown",
-    move: SUPPORT_TOUCH ? "touchmove" : "mousemove",
-    end: SUPPORT_TOUCH ? "touchend" : "mouseup",
-};
-
-function toPos(obs$: any) {
-    return obs$.pipe(
-        map((v: any) => {
-            if (SUPPORT_TOUCH) {
-                return {
-                    x: v.changedTouches[0].pageX,
-                    y: v.changedTouches[0].pageY,
-                    clientX: v.changedTouches[0].clientX ?? 0,
-                    clientY: v.changedTouches[0].clientY ?? 0,
-                };
-            }
-
-            return {
-                x: v.pageX,
-                y: v.pageY,
-                clientX: v.clientX,
-                clientY: v.clientY,
-            };
-        })
-    );
-}
