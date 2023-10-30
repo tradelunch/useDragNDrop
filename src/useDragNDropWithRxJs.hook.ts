@@ -21,15 +21,15 @@ import {
 } from "rxjs";
 
 import * as R from "ramda";
-
-const isValueExist = R.both(R.complement(R.isNil), R.complement(R.isEmpty));
+import { isValueExist } from "./util";
 
 type TPosition = {
     x: number;
     y: number;
 };
 
-const SUPPORT_TOUCH = "ontouchstart" in window;
+const SUPPORT_TOUCH =
+    typeof window === "undefined" ? false : "ontouchstart" in window;
 
 const EVENTS = {
     start: SUPPORT_TOUCH ? "touchstart" : "mousedown",
@@ -49,12 +49,14 @@ function toPos(obs$: any) {
                 };
             }
 
-            return {
+            const pos = {
                 x: v.pageX,
                 y: v.pageY,
                 clientX: v.clientX,
                 clientY: v.clientY,
             };
+
+            return pos;
         })
     );
 }
@@ -74,14 +76,14 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
             return arr$.pipe(
                 pluck(0),
                 startWith(document.documentElement),
+                filter<any>(isValueExist),
                 map((v) => {
                     if (typeof v === "string") {
                         return document.querySelector(v);
                     }
 
                     return v;
-                }),
-                filter<any>(isValueExist)
+                })
             );
         },
         [bounds]
@@ -147,12 +149,17 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
     const shift$ = useObservable(() => {
         return down$.pipe(
             map((event: any) => {
-                const currentTargetRect =
-                    event.currentTarget.getBoundingClientRect();
+                const targetRect = event.target.getBoundingClientRect();
                 const shift = {
-                    shiftX: event.clientX - currentTargetRect.left,
-                    shiftY: event.clientY - currentTargetRect.top,
+                    shiftX: event.clientX - targetRect.left,
+                    shiftY: event.clientY - targetRect.top,
                 };
+                // console.log('shift:: ', {
+                //   shift,
+                //   targetRect,
+                //   clientX: event.clientX,
+                //   clientY: event.clientY,
+                // });
                 return shift;
             }),
             share()
@@ -175,7 +182,6 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
                     const boundRect = bounds.getBoundingClientRect();
 
                     const newY = (function (boundRect, item, bounds) {
-                        // const top = boundRect.top;
                         const top = (function getTop(
                             overflow,
                             boundRect,
@@ -185,17 +191,13 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
                             return Math.max(bounds.offsetTop, boundRect.top);
                         })(overflow, boundRect, bounds);
 
-                        let newY = y - shiftY - top;
-
-                        // bottom
-                        // const newBottom = newY + item.offsetHeight;
-                        // if (newBottom > boundRect.height) {
+                        // top
+                        let newY = y - shiftY - top + bounds.scrollTop;
                         newY = Math.min(
                             newY,
-                            bounds.clientHeight -
+                            bounds.scrollHeight -
                                 item.getBoundingClientRect().height
                         );
-                        // }
 
                         // top
                         newY = Math.max(newY, 0);
@@ -210,8 +212,6 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
                         newX = Math.max(newX, 0);
 
                         // right
-                        // if (newX > boundRect.width - item.offsetWidth) {
-                        // newX = boundRect.width - item.offsetWidth;
                         newX = Math.min(
                             newX,
                             bounds.clientWidth -
@@ -246,7 +246,7 @@ export const useDragNDropWithRxJs = (props: Props = {}) => {
         ref,
         ref$,
         pos,
-        bounds,
         bounds$,
+        dragPos$: merged$,
     };
 };
